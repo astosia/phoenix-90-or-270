@@ -9,7 +9,7 @@
 #define ROUND_VERTICAL_PADDING 15
 
 //Static and initial vars
-static GFont //FontHour,
+static GFont 
   FontDate, FontWeather, FontSteps, FontIcon, FontIcon2, FontCity, FontWeatherIcons, FontWind;
 char
   tempstring[44], 
@@ -26,7 +26,6 @@ char
   templowstring[44], 
   temphistring[44];
 
-//bool   RightLefts;
 
 FFont* time_font;
 
@@ -34,7 +33,7 @@ static Window * s_window;
 
 EffectLayer* effect_layer;
 EffectLayer* effect_layer_2; //rotation effect layer
-//fectLayer* effect_layer_3; //blur or anti-alias effect layer
+
 
 GColor color_loser;
 GColor color_winner;
@@ -43,13 +42,11 @@ static Layer * s_canvas_to_be_rotated;
 static Layer * s_canvas;
 static Layer * s_canvas_sunset_icon;
 static Layer * s_canvas_bt_icon;
-//static TextLayer *s_weather_icon_layer;
-//static TextLayer *s_forecast_icon_layer;
+
 Layer * hour_area_layer;
 Layer * minute_area_layer;
 static TextLayer *s_step_layer;
-//static TextLayer *s_bt_icon_layer2;
-//static TextLayer *s_sunset_icon_layer2;
+
 
 static int s_hours, s_minutes, s_weekday, s_day, s_loop, s_countdown;
 
@@ -187,17 +184,16 @@ static void prv_default_settings(){
   settings.Text5ColorN = GColorBlack;
   settings.WeatherUnit = 0;
   settings.WindUnit = "kts";
-//  settings.RightLeft = true;
   settings.UpSlider = 30;
   settings.NightTheme = true;
-//  effect_layer_add_effect(effect_layer_2, effect_rotate_90_degrees, (void *)settings.RightLeft);
+
 }
 int HourSunrise=700;
 int HourSunset=2200;
 bool BTOn=true;
 bool GPSOn=true;
 bool IsNightNow=false;
-//bool RightLefts=false;
+
 //////End Configuration///
 ///////////////////////////
 
@@ -210,9 +206,7 @@ static GColor ColorSelect(GColor ColorDay, GColor ColorNight){
   }
 }
 
-//bool RotateSelect() {
-//  return settings.RightLeft;
-//}
+
 // Callback for js request
 void request_watchjs(){
   //Starting loop at 0
@@ -233,10 +227,6 @@ static void bluetooth_callback(bool connected){
 
 static void bluetooth_vibe_icon (bool connected) {
 
-  // Show icon if disconnected, hiding sunset icon
- // layer_set_hidden(text_layer_get_layer(s_bt_icon_layer2), connected);
- // layer_set_hidden(text_layer_get_layer(s_sunset_icon_layer2), !connected);
-  
   layer_set_hidden(s_canvas_bt_icon, connected);
   layer_set_hidden(s_canvas_sunset_icon, !connected);
 
@@ -359,8 +349,6 @@ void update_hour_area_layer(Layer *l, GContext* ctx7) {
 
     #ifdef PBL_COLOR
       fctx_enable_aa(true);
- // #else
- //     fctx_enable_aa(false);
     #endif
   
 
@@ -378,7 +366,6 @@ void update_hour_area_layer(Layer *l, GContext* ctx7) {
   FPoint time_pos;
   fctx_begin_fill(&fctx);
   fctx_set_text_em_height(&fctx, time_font, font_size);
-//  fctx_set_text_em_height(&fctx, minutes_font, font_size);
 
   int hourdraw;
   char hournow[8];
@@ -395,18 +382,10 @@ void update_hour_area_layer(Layer *l, GContext* ctx7) {
  // hourdraw = hourdraw1+(('0'==hourdraw1[0])?1:0));
   }
   
-  //time_pos2.y = INT_TO_FIXED(bounds.size.h - v_padding2 + v_adjust2);
- // fctx_set_offset(&fctx1, time_pos2);
- // fctx_draw_string(&fctx1, minnow, time_font, GTextAlignmentCenter, FTextAnchorBaseline);
- // fctx_end_fill(&fctx1);
-  
+ 
   // draw hours
 
-//  time_pos.y = INT_TO_FIXED(v_padding + v_adjust);
-//  time_pos.x = INT_TO_FIXED(bounds.size.w / 2);
- // time_pos.x = INT_TO_FIXED(bounds.size.w / 4 + h_adjust);
- //   time_pos.x = INT_TO_FIXED(bounds.size.w / 4 + h_adjust); //this one works when center justified
-      time_pos.x = INT_TO_FIXED(bounds.size.w + h_adjust);
+  time_pos.x = INT_TO_FIXED(bounds.size.w + h_adjust);
   time_pos.y = INT_TO_FIXED(bounds.size.h / 2 + v_adjust);
 //  fctx_set_pivot(&fctx, time_pos);
   fctx_set_offset(&fctx, time_pos);
@@ -438,7 +417,7 @@ void update_minute_area_layer(Layer *a, GContext* ctx8) {
  // int font_size = 4 * bounds.size.h / 7;
   int font_size2 = bounds.size.h/1.85;
 
-  // avenir + avenir bold metrics
+  //font metrics
 //  int v_padding2 = bounds.size.h / 16;
   int h_adjust2 = 0;
   int v_adjust2 = 0;
@@ -446,8 +425,6 @@ void update_minute_area_layer(Layer *a, GContext* ctx8) {
 
     #ifdef PBL_COLOR
       fctx_enable_aa(true);
-  //#else 
-  //    fctx_enable_aa(true);
     #endif
   
 
@@ -520,8 +497,7 @@ static void layer_update_proc_pre_rotate(Layer * layer1, GContext * ctx1){
     (PBL_IF_ROUND_ELSE(
       (GRect(bounds1.size.w/2-15,78,30,20)),
       (GRect(bounds1.size.w/2-15,72,30,20))));
-   //     (GRect(bounds1.size.w/2 - 0 /*58*/,90-9,86,20)),
-  //      (GRect(bounds1.size.w/2 - 0/*38*/, 84-8, 72, 20 ))));
+
   
    GRect IconForeRect =
     (PBL_IF_ROUND_ELSE(
@@ -544,18 +520,7 @@ static void layer_update_proc_pre_rotate(Layer * layer1, GContext * ctx1){
    (GRect(bounds1.size.w/2-15,158,30,20)),
       (GRect(-2,134,bounds1.size.w/2,20))));
   
- 
-      // (GRect(2,90-9,64,20)),
-   //   (GRect(0, 84-8, 64, 20))));
-    
 
-  
- 
-    
-   /*GRect WindRect =  
-    (PBL_IF_ROUND_ELSE(
-      (GRect(36,90-8,32,20)),
-      (GRect(34, 84-7, 32, 20))));*/
   
   //onreconnection(BTOn, connection_service_peek_pebble_app_connection());
  // bluetooth_callback(connection_service_peek_pebble_app_connection());
@@ -570,7 +535,7 @@ static void layer_update_proc_pre_rotate(Layer * layer1, GContext * ctx1){
     char WindKtsNowToDraw[20];
     char WindDirAveToDraw[20];
     char WindKtsAveToDraw[20];
-  //char WindToDraw[20];
+
 
   /*if (!BTOn){
     snprintf(TempToDraw, sizeof(TempToDraw), " ");
@@ -593,7 +558,7 @@ static void layer_update_proc_pre_rotate(Layer * layer1, GContext * ctx1){
      snprintf(WindKtsNowToDraw,sizeof(IconForeToDraw),"%s",windstring);
      snprintf(WindDirAveToDraw,sizeof(IconForeToDraw),"%s",windiconavestring);
      snprintf(WindKtsAveToDraw,sizeof(IconForeToDraw),"%s",windavestring);
-  //  snprintf(WindToDraw, sizeof(WindToDraw), "%s",windstring); 
+
   // }
   //Build display
   graphics_context_set_fill_color(ctx1, ColorSelect(settings.Back1Color, settings.Back1ColorN));
@@ -615,7 +580,6 @@ static void layer_update_proc_pre_rotate(Layer * layer1, GContext * ctx1){
   graphics_draw_text(ctx1, WindKtsAveToDraw,FontWind,WindKtsAveRect,GTextOverflowModeFill,PBL_IF_ROUND_ELSE(GTextAlignmentCenter,GTextAlignmentRight), NULL);
   
 
-//  graphics_context_set_text_color(ctx1,ColorSelect(settings.Text1Color, settings.Text1ColorN));
  
  
     
@@ -627,16 +591,7 @@ static void layer_update_proc(Layer * layer, GContext * ctx){
   // Create Rects
   GRect bounds3 = layer_get_bounds(layer);
 
- /* GRect HourRect =  
-    (PBL_IF_ROUND_ELSE(
-      GRect(0, (bounds3.size.h/2) - 56, (bounds3.size.w/2)-10, 90),
-      GRect(0-10, (bounds3.size.h/2) - 48, (bounds3.size.w/2), 90)));
-  
-  GRect MinRect = 
-    (PBL_IF_ROUND_ELSE(
-      GRect((bounds3.size.w/2)+10, (bounds3.size.h/2)-56, (bounds3.size.w/2)-1, 90),
-      GRect((bounds3.size.w/2), (bounds3.size.h/2)-48, (bounds3.size.w/2), 90)));*/
-  
+ 
   //int offsetdate = PBL_IF_RECT_ELSE(12, 10);
   GRect DateRect = 
   //  (0, offsetdate, bounds3.size.w, bounds1.size.h/4);
@@ -662,27 +617,7 @@ static void layer_update_proc(Layer * layer, GContext * ctx){
   
   
 
-//Minutes and Hours 
-/*  int mindraw;
-  mindraw = s_minutes;
-  char minnow[8];
-  snprintf(minnow, sizeof(minnow), "%02d", mindraw);
-  
-  int hourdraw;
-  char hournow[8];
-  if (clock_is_24h_style()){
-    hourdraw=s_hours;
-    snprintf(hournow,sizeof(hournow),"%02d",hourdraw);
-    }
-  else {
-    if (s_hours==0 || s_hours==12){
-      hourdraw=12;
-    }
-    else hourdraw=s_hours%12;    
-  snprintf(hournow, sizeof(hournow), "%d", hourdraw);
- // hourdraw = hourdraw1+(('0'==hourdraw1[0])?1:0));
-  }*/
- 
+
    //Date
   // Local language
   const char * sys_locale = i18n_get_system_locale();
@@ -740,19 +675,7 @@ int nowthehouris = s_hours * 100 + s_minutes;
   //}
   
 
-  //Hour Band
-/*  graphics_context_set_text_color(ctx, ColorSelect(settings.HourColor, settings.HourColorN));
-  if(clock_is_24h_style()){
-    graphics_draw_text(ctx,hournow,FontHour,HourRect,GTextOverflowModeFill,GTextAlignmentRight,NULL);
-  }
-  else{
-    graphics_draw_text(ctx, hournow+(('0'==hournow[0])?1:0), FontHour, HourRect, GTextOverflowModeFill, PBL_IF_ROUND_ELSE(GTextAlignmentRight,GTextAlignmentRight), NULL); 
-  } //graphics_draw_text(ctx, "47", FontHour, HourRect, GTextOverflowModeFill, PBL_IF_ROUND_ELSE(GTextAlignmentRight,GTextAlignmentRight), NULL); 
  
-  //Min Band
-  graphics_context_set_text_color(ctx, ColorSelect(settings.MinColor, settings.MinColorN));
-  graphics_draw_text(ctx, minnow, FontHour, MinRect, GTextOverflowModeFill, PBL_IF_ROUND_ELSE(GTextAlignmentLeft,GTextAlignmentRight), NULL); 
-  */
   //dates band
   graphics_context_set_text_color(ctx, ColorSelect(settings.Text2Color, settings.Text2ColorN));
   graphics_draw_text(ctx, SunsetToDraw, FontDate, SunsetRect, GTextOverflowModeFill, PBL_IF_ROUND_ELSE(GTextAlignmentRight,GTextAlignmentLeft), NULL); 
@@ -770,8 +693,7 @@ int nowthehouris = s_hours * 100 + s_minutes;
 
 static void layer_update_proc_sunset(Layer * layer2, GContext * ctx2){
    // Create Rects
-//  GRect bounds = layer_get_bounds(layer2);
- 
+
   GRect SunsetIconRect = 
     (PBL_IF_ROUND_ELSE(
       GRect(24,126+10,20,20),
@@ -1026,14 +948,7 @@ static void prv_inbox_received_handler(DictionaryIterator * iter, void * context
     } else settings.NightTheme = true;
   } 
   
-  /*Tuple * dir_t = dict_find(iter, MESSAGE_KEY_RightLeft);
-  if (dir_t){
-    if (dir_t -> value -> int32 == 0){
-      settings.RightLeft = false;
-      APP_LOG(APP_LOG_LEVEL_DEBUG, "rotation left");
-    } else settings.RightLeft = true;
-       APP_LOG(APP_LOG_LEVEL_DEBUG, "rotation right");
-  } */
+ 
   //Update colors
   layer_mark_dirty(s_canvas_to_be_rotated);
   layer_mark_dirty(s_canvas);
@@ -1041,8 +956,7 @@ static void prv_inbox_received_handler(DictionaryIterator * iter, void * context
   layer_mark_dirty(s_canvas_bt_icon);
   layer_mark_dirty(hour_area_layer);
   layer_mark_dirty(minute_area_layer);
- // effect_layer_add_effect(effect_layer_2, effect_rotate_90_degrees, (void *)settings.RightLeft);
- //   layer_mark_dirty(effect_layer_2);
+
   // Save the new settings to persistent storage
   prv_save_settings();
 }
@@ -1057,16 +971,7 @@ static void window_load(Window * window){
   layer_set_update_proc(s_canvas_to_be_rotated, layer_update_proc_pre_rotate);
   layer_add_child(window_layer, s_canvas_to_be_rotated);
   
-//  effect_layer = layer_create(bounds);
-  
- /* effect_layer_2 = effect_layer_create(PBL_IF_ROUND_ELSE(
-      GRect(0,0,180,180),
-      GRect(0, 0,144,168 )));
-  effect_layer_add_effect(effect_layer_2, effect_rotate_90_degrees, (void *)true);
- // layer_set_update_proc(effect_layer_2, layer_update_proc_rotate);
-  layer_add_child(window_get_root_layer(s_window), effect_layer_get_layer(effect_layer_2));*/
  
-  
   s_canvas = layer_create(bounds4);
     layer_set_update_proc(s_canvas, layer_update_proc);
     layer_add_child(window_layer, s_canvas);
@@ -1099,48 +1004,13 @@ static void window_load(Window * window){
     layer_add_child(window_get_root_layer(s_window), minute_area_layer);
     layer_set_update_proc(minute_area_layer, update_minute_area_layer);
 
- // RotateSelect();
-  
   effect_layer_2 = effect_layer_create(PBL_IF_ROUND_ELSE(
       GRect(0,0,180,180),
       GRect(0, 0,144,168 )));
-  effect_layer_add_effect(effect_layer_2, effect_rotate_90_degrees, (void *)true);
- // layer_set_update_proc(effect_layer_2, layer_update_proc_rotate);
+  effect_layer_add_effect(effect_layer_2, effect_rotate_90_degrees, (void *)true);  /////////CHANGE TRUE (rotate clockwise, or right) TO FALSE TO ROTATE anti-clockwise/left/THE OTHER WAY!//////////////
   layer_add_child(window_get_root_layer(s_window), effect_layer_get_layer(effect_layer_2));
-  
-  //   layer_add_child(window_get_root_layer(s_window), effect_layer_get_layer(effect_layer_3));
-   
-  /*
-  
-  s_sunset_icon_layer2 = text_layer_create((PBL_IF_ROUND_ELSE(
- //   GRect((bounds.size.w/2)-24, bounds.size.h-22+2, 20, 20),
-    GRect(28,126,20,20),
-    GRect(0,128+3,20,20))));
-  //bitmap_layer_set_bitmap(s_sunset_icon_layer, s_sunset_icon_bitmap);
-  text_layer_set_text_color(s_sunset_icon_layer2,ColorSelect(settings.Text2Color,settings.Text2ColorN));
-  text_layer_set_background_color(s_sunset_icon_layer2,GColorClear);
-  text_layer_set_font(s_sunset_icon_layer2,FontIcon);
-  text_layer_set_text_alignment(s_sunset_icon_layer2,GTextAlignmentCenter);
-  text_layer_set_text(s_sunset_icon_layer2,"\U0000F052");
-  //Create the Bluetooth icon GBitmap
-//  s_bt_icon_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BT_ICON);
 
-  // Create the BitmapLayer to display the GBitmap
-  s_bt_icon_layer2 = text_layer_create(PBL_IF_ROUND_ELSE(
-//    GRect((bounds4.size.w/4*3) - 15, 30, 30, 30),
-//    GRect((bounds4.size.w/4*3) - 12,10,30,30)));
-     GRect(28,126,20,20),
-     GRect(0,128+3,20,20)));
-  text_layer_set_text_color(s_bt_icon_layer2,ColorSelect(settings.Text2Color,settings.Text2ColorN));
-  text_layer_set_background_color(s_bt_icon_layer2,GColorClear);
-  text_layer_set_font(s_bt_icon_layer2,FontIcon2);
-  text_layer_set_text_alignment(s_bt_icon_layer2,GTextAlignmentCenter);
-  text_layer_set_text(s_bt_icon_layer2, "z");
   
-  layer_add_child(window_layer, text_layer_get_layer(s_bt_icon_layer2));
-  layer_add_child(window_layer, text_layer_get_layer(s_sunset_icon_layer2));*/
-  
-
 
 }
 
